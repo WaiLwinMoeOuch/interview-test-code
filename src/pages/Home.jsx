@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useState } from 'react'
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import axios from 'axios';
-import { toBeChecked } from '@testing-library/jest-dom/dist/matchers';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -16,7 +15,6 @@ const Home = () => {
     const [update, setupdate] = useState(false);
     const [nextpage, setnextpage] = useState('');
     const [optionid, setoptionid] = useState('');
-    const [url, seturl] = useState([]);
     const [id, setId] = useState('');
 
     //Error Status
@@ -24,8 +22,6 @@ const Home = () => {
 
     //Store Data
     const [store, setstore] = useState([]);
-
-    //Update Data
 
     //Search Data
     const [search, setsearch] = useState('');
@@ -48,8 +44,6 @@ const Home = () => {
 
     //Save
     const handlesave = () => {
-
-
         const newId = uuidv4();
         const obj = {
             id: newId,
@@ -70,7 +64,6 @@ const Home = () => {
         });
     }
 
-    //For show
     const handleadd = () => {
         setbox(!box)
     }
@@ -89,10 +82,6 @@ const Home = () => {
     //Update For Show
     const handleupdate = (id) => {
         setupdate(!update)
-        let obj = {
-            id: id,
-        }
-        // console.log(id);
         const data = store.find(i => i.id === id);
         setId(data.id)
         setpetname(data.petname)
@@ -107,18 +96,6 @@ const Home = () => {
         setaddress(data.address)
         setidcode(data.id_code)
     }
-
-
-    // onst doubleupdate = (id) => {
-    //     let actualElement = {
-    //         id: id,
-    //         text: edit,
-    //     }
-    //     setdata([{ id: id, ...actualElement }])
-    //     setModalVisible(false);
-    //     Toast.success('Successfully Updated!')
-    // }
-
 
     const updatefinaldata = () => {
         const obj = {
@@ -144,9 +121,6 @@ const Home = () => {
 
     //Delete
     const handledelete = (id) => {
-        let obj = {
-            id: id
-        }
         confirmAlert({
             title: 'Comfirmation',
             message: 'Are you sure you want to delete this patient?',
@@ -168,21 +142,6 @@ const Home = () => {
             ]
         });
     }
-
-    //Paginate
-    const handleurl = () => {
-        axios
-            .get(nextpage).then((res) => {
-                setstore([...store, ...res.data.data.data]);
-                setnextpage(res.data.data.next_page_url);
-            });
-    }
-
-    //Search
-    const handlesearch = () => {
-
-    }
-
 
     return (
         <>
@@ -222,7 +181,7 @@ const Home = () => {
                             <div className="col-3 ">
                                 <div className='search-box position-relative'>
                                     <input type="text" onChange={(e) => setsearch(e.target.value)} className='input-search mt-1 ms-2' placeholder='Search table' />
-                                    <img src="image/search.png" onClick={() => handlesearch()} className='search-btn' alt="" />
+                                    <img src="image/search.png" className='search-btn' alt="" />
                                 </div>
                             </div>
                             <div className="col-9">
@@ -243,13 +202,14 @@ const Home = () => {
                                 </select>
                             </div>
                             <div className='col-10'>
-                                <h6 className='float-end normal-font me-4 mt-3'>Rows per pages: <select name="" className='input-form-two' onChange={() => handleurl()} id="">
-                                    <option value="normal">N</option>
+                                <h6 className='float-end normal-font me-4 mt-3'>Rows per pages: <select name="" className='input-form-two' id="">
+                                    <option value="normal">10</option>
                                     <option value="all">All</option>
                                 </select></h6>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <div className="row mt-3">
@@ -276,10 +236,10 @@ const Home = () => {
                                         return (
                                             <tr className="position-relative" >
                                                 <td><input type="checkbox" name="" id="" /></td>
-                                                <td>{item.id_code}</td>
+                                                <td>{item.id}</td>
                                                 <td>{item.petname}</td>
                                                 <td>
-                                                    {item.status === 'food-allergy' ? <img src='image/allergy.png' /> : <img src='image/picky eater.png' />}
+                                                    {item.status === 'food-allergy' ? <img src='image/allergy.png' /> : <img src='image/pickyeater.png' />}
                                                 </td>
                                                 <td>{item.pawrent}</td>
                                                 <td>{item.breed}</td>
